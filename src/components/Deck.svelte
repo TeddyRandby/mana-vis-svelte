@@ -48,11 +48,12 @@
 
 <style>
   .deck {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
+
   .deck-column {
-    flex-grow: 1;
   }
 </style>

@@ -44,7 +44,6 @@
 
   .deck{
     padding: 2vh 5vw;
-    min-width: 40vw;
     min-height: 100vh;
     background-color: var(--background-color-dark);
     color: var(--primary-color);

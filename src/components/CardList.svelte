@@ -21,4 +21,8 @@
         font-weight: bolder;
         cursor: default;
     }
+    
+    main {
+      margin: .5rem;
+    }
 </style>
