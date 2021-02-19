@@ -9,7 +9,7 @@
   $: creatures = deck.filter((c) => c.type_line.match(/Creature/g))
   $: lands = deck.filter((c) => c.type_line.match(/Land/g))
   $: planeswalkers = deck.filter((c) => c.type_line.match(/Planeswalker/g))
-  $: spells = deck.filter((c) => c.type_line.match(/!(Land)((Instant)|(Sorcery))/g))
+  $: spells = deck.filter((c) => c.type_line.match(/((Instant)|(Sorcery))/g))
   $: artifacts = deck.filter((c) => c.type_line.match(/Artifact/g))
   $: enchantments = deck.filter((c) => c.type_line.match(/Enchantment/g))
   
@@ -41,6 +41,11 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+  }
+
+  .deck-column {
+    width: 100%;
+    max-width: 55ch;
   }
 
 </style>

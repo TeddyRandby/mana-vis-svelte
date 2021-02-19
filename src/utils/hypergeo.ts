@@ -1,14 +1,29 @@
-export default function hypergeo(deck: number, copies: number, drawn: number, successes: number) {
-    let pral: number;
-    //Chance to draw x or more cards
-    if (successes > 0)
-        pral = 1 - hyp(successes - 1, drawn, copies, deck);
-    else
-        pral = 1;
-    if (pral < 1e-6)
-        pral = 0;
-    pral = (100 * pral);
-    return pral;
+
+/*
+ * production and pips are objects such as:
+ * {
+ *  "W": 2
+ * }
+ */
+export default function hypergeo(deck: number, production: any, drawn: number, pips: any) {
+
+    let probs:number[] = [];
+    Object.keys(pips).forEach((key: string) => {
+        const successes = pips[key]
+        const copies = production[key]
+        let pral: number;
+        //Chance to draw x or more cards
+        if (successes > 0)
+            pral = 1 - hyp(successes - 1, drawn, copies, deck);
+        else
+            pral = 1;
+        if (pral < 1e-6)
+            pral = 0;
+
+        probs.push(pral)
+    })
+
+    return 100 * probs.reduce((acc, cur) => acc * cur, 1);
 }
 
 // value, Sample Size, Subpopulation Size, Population Size

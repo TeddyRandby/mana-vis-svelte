@@ -1,12 +1,13 @@
 <script>
   import Fa from "svelte-fa"
-  import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
-import hypergeo from "../utils/hypergeo";
-import { production } from "../stores";
+  import {fade} from "svelte/transition"
+  import { faPlus, faMinus, faCheckCircle, faExclamationCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+  import hypergeo from "../utils/hypergeo";
+  import { production } from "../stores";
+  import parsePips from "../utils/parsePips";
 
   export let card
-
-  let hover = false;
+  let scoreHovered = false;
 
   const increment = () => {
           if (card.count < 4 || card.name.match(/(Forest)|(Mountain)|(Swamp)|(Island)|(Plains)|(Wastes)/g))
@@ -17,48 +18,53 @@ import { production } from "../stores";
           card.count = card.count - 1; 
       }
 
-  const onEnter = () => {
-          hover = true;
-      }
-  const onLeave= () => {
-          hover = false;
+      const onEnter = () => {
+              scoreHovered = true;
       }
 
- 
+      const onLeave = () => {
+              scoreHovered = false;
+      }
+
   let manaScore
-  $:if (card.mana_cost) manaScore = hypergeo(60,$production[card.color_identity[0]] , 7 + card.cmc, card.mana_cost.match(card.color_identity[0]).length)
+
+  $:if (card.mana_cost) manaScore = hypergeo(60,$production, 7 + card.cmc, parsePips(card))
   $:success = manaScore >= 90
   $:warning = manaScore >= 80 && manaScore < 90 
   $:error = manaScore < 80
 
-
 </script>
 
-<main on:mouseenter={onEnter} on:mouseleave={onLeave}>
-    <p class="name"><strong>{card.count}</strong> {card.name}</p>
-    {#if manaScore}<p class:success class:warning class:error>{Math.round(manaScore) || ""}</p> {/if}
-    <button class:hover on:click={increment}><Fa icon={faPlus} size="sm"/></button>
-    <button class:hover on:click={decrement}><Fa icon={faMinus} size="sm"/></button>
+<main>
+    <p class="name hoverable"><strong>{card.count}</strong> {card.name}</p>
+    {#if manaScore}
+        <p class="hoverable" on:mouseenter={onEnter} on:mouseleave={onLeave} class:success class:warning class:error>
+            {#if scoreHovered}
+                <span in:fade>{Math.round(manaScore)}</span>
+            {:else if success}
+                <Fa icon={faCheckCircle}/>
+            {:else if warning}
+                <Fa icon={faExclamationCircle}/>
+            {:else if error}
+                <Fa icon={faTimesCircle}/>
+            {/if}
+        </p> 
+    {/if}
+    <button class="hoverable" on:click={increment}><Fa icon={faPlus} size="sm"/></button>
+    <button class="hoverable" on:click={decrement}><Fa icon={faMinus} size="sm"/></button>
 </main>
 
 <style>
-    p {
+    p, button {
         cursor: pointer;
-        margin: auto;
+        margin: 0;
+        padding: .5rem;
+	      letter-spacing: 2px;
+	      font-weight: 600;
     }
 
     .name {
         flex-grow: 1;
-    }
-
-    .success {
-        color: var(--success-color)
-    }
-    .warning{
-        color: var(--warning-color)
-    }
-    .error{
-        color: var(--error-color)
     }
 
     main {
@@ -72,7 +78,7 @@ import { production } from "../stores";
         box-shadow: 0 2px;
     }
 
-    button, p {
+    .hoverable {
         border: none;
 	      font-family: inherit;
 	      font-size: inherit;
@@ -80,10 +86,6 @@ import { production } from "../stores";
 	      background: none;
 	      cursor: pointer;
 	      display: inline-block;
-        margin: 0;
-        padding: .5rem;
-	      letter-spacing: 2px;
-	      font-weight: 600;
 	      outline: none;
 	      position: relative;
 	      -webkit-transition: all 0.3s;
@@ -92,7 +94,7 @@ import { production } from "../stores";
         z-index: 0;
     }
 
-    button:after, p:after {
+    .hoverable:after {
 	      content: '';
 	      position: absolute;
 	      z-index: -1;
@@ -106,17 +108,26 @@ import { production } from "../stores";
 	      background: var(--primary-color);
     }
 
-    button:hover,
-    button:active,
-    p:hover, p:active {
+    .hoverable:hover,
+    .hoverable:active
+    {
 	      color: var(--background-color-dark);
     }
 
-    button:hover:after,
-    button:active:after,
-    p:hover:after,
-    p:active:after {
+    .hoverable:hover:after,
+    .hoverable:active:after
+     {
 	      height: 100%;
+    }
+
+    .success {
+        color: var(--success-color)
+    }
+    .warning{
+        color: var(--warning-color)
+    }
+    .error{
+        color: var(--error-color)
     }
     
     
