@@ -39,6 +39,7 @@
         display: flex;
         flex-direction: row;
         align-items: stretch;
+        margin-left: .15rem;
     }
 
     main:hover {
@@ -53,11 +54,10 @@
 	      background: none;
 	      cursor: pointer;
 	      display: inline-block;
-        margin-bottom: 0;
+        margin: 0;
         padding: .5rem;
-	      text-transform: uppercase;
-	      letter-spacing: 1px;
-	      font-weight: 700;
+	      letter-spacing: 2px;
+	      font-weight: 600;
 	      outline: none;
 	      position: relative;
 	      -webkit-transition: all 0.3s;

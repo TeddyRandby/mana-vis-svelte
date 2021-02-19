@@ -8,7 +8,7 @@
 </script>
 
 <main>
-  <p class="header">{header.toUpperCase()} ({count})</p>
+  <p class="header">{header} ({count})</p>
   {#each cards as card}
     <Card bind:card />
   {/each}
@@ -17,8 +17,9 @@
 <style>
     .header {
         color: var(--primary-color);
-        font-style: italic;
-        font-weight: bolder;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 0;
         cursor: default;
     }
     
