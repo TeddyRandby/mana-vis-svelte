@@ -3,6 +3,7 @@
   import { SCRYFALLIFY_URL } from "./gql/scryfallify"
   import Deck from "./components/Deck.svelte"
   import Nav from "./components/Nav.svelte"
+
   let url = ""
 
   const { query } = gqlClient("https://mana-vis-api.herokuapp.com/")
@@ -23,7 +24,7 @@
       <Deck deck={data.scryfallifyURL} />
     {:catch errors}
       {#each errors as error}
-        <p>{error.message}</p>
+        <h2>{error.message}</h2>
       {/each}
     {/await}
   </div>
@@ -37,17 +38,16 @@
 <style>
   :root {
     --primary-color: #1a5a89;
-    --secondary-color: #61c3bb;
-    --background-color-light: #ebebeb;
-    --background-color-dark: #e0e0e0;
-    --accent-color: #e74b25;
+    --success-color: #61c3bb;
+    --warning-color: #faa716;
+    --error-color: #e74b25;
+    --background-color-dark: #ffffff;
   }
 
   :global(body) {
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif;
-    background-color: var(--background-color-light);
     color: var(--primary-color);
   }
 
@@ -76,6 +76,10 @@
   }
 
   input:hover, input:focus {
+    background: none;
+    border: none;
+    outline: none;
+    margin: 0 auto;
     border-bottom: 2px solid var(--primary-color)
   }
 

@@ -4,6 +4,9 @@ export const SCRYFALLIFY_URL = `
       name
       count
       type_line
+      cmc
+      mana_cost
+      color_identity
     }
   }
 `;

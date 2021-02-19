@@ -1,15 +1,19 @@
 <script>
   import Fa from "svelte-fa"
   import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import hypergeo from "../utils/hypergeo";
+import { production } from "../stores";
 
   export let card
 
   let hover = false;
 
   const increment = () => {
-          card.count = card.count + 1; 
+          if (card.count < 4 || card.name.match(/(Forest)|(Mountain)|(Swamp)|(Island)|(Plains)|(Wastes)/g))
+            card.count = card.count + 1; 
       }
   const decrement = () => {
+          if (card.count > 1)
           card.count = card.count - 1; 
       }
 
@@ -20,10 +24,19 @@
           hover = false;
       }
 
+ 
+  let manaScore
+  $:if (card.mana_cost) manaScore = hypergeo(60,$production[card.color_identity[0]] , 7 + card.cmc, card.mana_cost.match(card.color_identity[0]).length)
+  $:success = manaScore >= 90
+  $:warning = manaScore >= 80 && manaScore < 90 
+  $:error = manaScore < 80
+
+
 </script>
 
 <main on:mouseenter={onEnter} on:mouseleave={onLeave}>
-    <p><strong>{card.count}</strong> {card.name}</p>
+    <p class="name"><strong>{card.count}</strong> {card.name}</p>
+    {#if manaScore}<p class:success class:warning class:error>{Math.round(manaScore) || ""}</p> {/if}
     <button class:hover on:click={increment}><Fa icon={faPlus} size="sm"/></button>
     <button class:hover on:click={decrement}><Fa icon={faMinus} size="sm"/></button>
 </main>
@@ -32,7 +45,20 @@
     p {
         cursor: pointer;
         margin: auto;
+    }
+
+    .name {
         flex-grow: 1;
+    }
+
+    .success {
+        color: var(--success-color)
+    }
+    .warning{
+        color: var(--warning-color)
+    }
+    .error{
+        color: var(--error-color)
     }
 
     main {

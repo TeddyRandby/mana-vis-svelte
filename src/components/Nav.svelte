@@ -15,6 +15,6 @@
 
     nav {
         background-color: var(--primary-color);
-        color: var(--background-color-light);
+        color: var(--background-color-dark);
     }
 </style>
