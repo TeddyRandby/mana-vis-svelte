@@ -3,7 +3,7 @@
   import { SCRYFALLIFY_URL } from "./gql/scryfallify"
   import Deck from "./components/Deck.svelte"
   import Nav from "./components/Nav.svelte"
-  let url = ""
+  let url = "https://www.mtggoldfish.com/archetype/standard-sultai-control-eld#paper"
 
   const { query } = gqlClient("https://mana-vis-api.herokuapp.com/")
 
