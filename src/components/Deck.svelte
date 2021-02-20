@@ -1,20 +1,37 @@
 <script>
   import CardList from "./CardList.svelte"
-  import parseProduction from "../utils/parseProduction"
-  import {production} from "../stores"
+  import { deck, scores } from "../stores"
 
+  import { gqlClient } from "../utils/gqlClient"
+  import { MANIFY_DECK } from "../gql/scryfallify"
 
-  export let deck
+  export let inputDeck
 
-  $: creatures = deck.filter((c) => c.type_line.match(/Creature/g))
-  $: lands = deck.filter((c) => c.type_line.match(/Land/g))
-  $: planeswalkers = deck.filter((c) => c.type_line.match(/Planeswalker/g))
-  $: spells = deck.filter((c) => c.type_line.match(/((Instant)|(Sorcery))/g))
-  $: artifacts = deck.filter((c) => c.type_line.match(/Artifact/g))
-  $: enchantments = deck.filter((c) => c.type_line.match(/Enchantment/g))
+  $: creatures = inputDeck.filter((c) => c.type_line.match(/Creature/g))
+  $: lands = inputDeck.filter((c) => c.type_line.match(/Land/g))
+  $: planeswalkers = inputDeck.filter((c) => c.type_line.match(/Planeswalker/g))
+  $: spells = inputDeck.filter((c) => c.type_line.match(/((Instant)|(Sorcery))/g))
+  $: artifacts = inputDeck.filter((c) => c.type_line.match(/Artifact/g))
+  $: enchantments = inputDeck.filter((c) => c.type_line.match(/Enchantment/g))
   
+  $: deck.update(()=>[...lands, ...creatures, ...planeswalkers, ...spells, ...artifacts, ...enchantments].map(c=>({name: c.name, count: c.count})))
 
-  $: production.update(()=>parseProduction(lands))
+  const { watch } = gqlClient("https://mana-vis-api.herokuapp.com/")
+
+  $: response = watch(MANIFY_DECK, {deck :{cards: $deck}})
+
+  const updateScores = async (updatedScores) => {
+    updatedScores = await updatedScores;
+      scores.update(() => updatedScores.manifyDeck.reduce((acc, curr)=>{
+          acc[curr.name] = curr.score
+          return acc
+
+        },{}))
+  }
+
+  $: updateScores($response)
+
+  $: console.log($scores)
 
 </script>
 

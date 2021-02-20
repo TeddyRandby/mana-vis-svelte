@@ -4,7 +4,35 @@ const cache = new Map<string, any>()
 
 export function gqlClient(url: string) {
   return {
-    query: (query: string, variables: Object) => {
+    once: async (query: string, variables: Object) => {
+
+      const key = JSON.stringify({ query, variables })
+      let data: any;
+
+      if (cache.has(key)) {
+        data = cache.get(key)
+        return data;
+      }
+
+      const response = await fetch(url, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: key,
+      })
+
+      data = await response.json()
+      cache.set(key, data)
+
+      return data
+    },
+    watch: (query: string, variables: Object) => {
       const store = writable(
         new Promise<any>(() => {})
       )

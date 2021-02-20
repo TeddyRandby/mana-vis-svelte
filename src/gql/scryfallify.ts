@@ -1,6 +1,6 @@
-export const SCRYFALLIFY_URL = `
-  query ScyfallifyURL($url: String!) {
-    scryfallifyURL(url: $url) {
+export const MANIFY_URL = `
+  query ManifyURL($url: String!) {
+    manifyURL(url: $url) {
       name
       count
       type_line
@@ -10,3 +10,15 @@ export const SCRYFALLIFY_URL = `
     }
   }
 `;
+
+export const MANIFY_DECK = `
+  query ManifyDeck($deck: DeckInput!) {
+    manifyDeck(deck: $deck) {
+      name
+      score
+      appearences
+      onCurve
+    }
+  }
+`;
+

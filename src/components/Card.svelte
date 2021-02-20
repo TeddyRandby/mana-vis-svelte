@@ -1,10 +1,8 @@
 <script>
   import Fa from "svelte-fa"
   import {fade} from "svelte/transition"
-  import { faPlus, faMinus, faCheckCircle, faExclamationCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
-  import hypergeo from "../utils/hypergeo";
-  import { production } from "../stores";
-  import parsePips from "../utils/parsePips";
+  import { faPlus, faMinus, faCheckCircle, faExclamationCircle, faTimesCircle, faCircleNotch } from '@fortawesome/free-solid-svg-icons'
+  import { scores } from "../stores"
 
   export let card
   let scoreHovered = false;
@@ -26,21 +24,22 @@
               scoreHovered = false;
       }
 
-  let manaScore
+  $:score = Math.round(100 * $scores[card.name])
 
-  $:if (card.mana_cost) manaScore = hypergeo(60,$production, 7 + card.cmc, parsePips(card))
-  $:success = manaScore >= 90
-  $:warning = manaScore >= 80 && manaScore < 90 
-  $:error = manaScore < 80
+
+  $:success = score >= 85
+  $:warning = score >= 60 && score < 95 
+  $:error = score < 60
+
 
 </script>
 
 <main>
     <p class="name hoverable"><strong>{card.count}</strong> {card.name}</p>
-    {#if manaScore}
+    {#if score}
         <p class="hoverable" on:mouseenter={onEnter} on:mouseleave={onLeave} class:success class:warning class:error>
             {#if scoreHovered}
-                <span in:fade>{Math.round(manaScore)}</span>
+                <span in:fade>{score}</span>
             {:else if success}
                 <Fa icon={faCheckCircle}/>
             {:else if warning}
@@ -48,6 +47,10 @@
             {:else if error}
                 <Fa icon={faTimesCircle}/>
             {/if}
+        </p> 
+    {:else if score !== 0}
+        <p class="hoverable" on:mouseenter={onEnter} on:mouseleave={onLeave} class:success class:warning class:error>
+            <Fa icon={faCircleNotch} class="rotate"/>
         </p> 
     {/if}
     <button class="hoverable" on:click={increment}><Fa icon={faPlus} size="sm"/></button>
@@ -123,13 +126,10 @@
     .success {
         color: var(--success-color)
     }
-    .warning{
+    .warning {
         color: var(--warning-color)
     }
-    .error{
+    .error {
         color: var(--error-color)
     }
-    
-    
-
 </style>

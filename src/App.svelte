@@ -1,14 +1,15 @@
 <script>
   import { gqlClient } from "./utils/gqlClient"
-  import { SCRYFALLIFY_URL } from "./gql/scryfallify"
+  import { MANIFY_URL } from "./gql/scryfallify"
   import Deck from "./components/Deck.svelte"
   import Nav from "./components/Nav.svelte"
 
   let url = ""
 
-  const { query } = gqlClient("https://mana-vis-api.herokuapp.com/")
+  const { watch } = gqlClient("https://mana-vis-api.herokuapp.com/")
 
-  $: response = query(SCRYFALLIFY_URL, { url })
+  $: response = watch(MANIFY_URL, { url })
+
 
 </script>
 
@@ -20,8 +21,8 @@
     </div>
     {#await $response}
       <h2>Waiting..</h2>
-    {:then data}
-      <Deck deck={data.scryfallifyURL} />
+    {:then deckData}
+      <Deck inputDeck={deckData.manifyURL} />
     {:catch errors}
       {#each errors as error}
         <h2>{error.message}</h2>
@@ -42,6 +43,18 @@
     --warning-color: #faa716;
     --error-color: #e74b25;
     --background-color-dark: #ffffff;
+  }
+  :global(.rotate) {
+    animation: rotation 2s infinite ease-in-out
+  }
+
+  @keyframes -global-rotation {
+    from {
+      transform: rotate(0deg)
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   :global(body) {
