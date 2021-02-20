@@ -27,9 +27,9 @@
   $:score = Math.round(100 * $scores[card.name])
 
 
-  $:success = score >= 85
-  $:warning = score >= 60 && score < 95 
-  $:error = score < 60
+  $:success = score >= 80
+  $:warning = score >= 50 && score < 80 
+  $:error = score < 50
 
 
 </script>
