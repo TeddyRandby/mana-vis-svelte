@@ -23,7 +23,4 @@
         cursor: default;
     }
     
-    main {
-      margin: .5rem;
-    }
 </style>

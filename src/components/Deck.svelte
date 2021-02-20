@@ -16,6 +16,8 @@
   
   $: deck.update(()=>[...lands, ...creatures, ...planeswalkers, ...spells, ...artifacts, ...enchantments].map(c=>({name: c.name, count: c.count})))
 
+  $: console.log($deck)
+
   const { watch } = gqlClient("https://mana-vis-api.herokuapp.com/")
 
   $: response = watch(MANIFY_DECK, {deck :{cards: $deck}})
@@ -23,15 +25,13 @@
   const updateScores = async (updatedScores) => {
     updatedScores = await updatedScores;
       scores.update(() => updatedScores.manifyDeck.reduce((acc, curr)=>{
-          acc[curr.name] = curr.score
+          acc[curr.name] = [curr.score, curr.appearences, curr.onCurve]
           return acc
 
         },{}))
   }
 
   $: updateScores($response)
-
-  $: console.log($scores)
 
 </script>
 

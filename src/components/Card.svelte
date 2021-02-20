@@ -24,37 +24,41 @@
               scoreHovered = false;
       }
 
-  $:score = Math.round(100 * $scores[card.name])
-
-
-  $:success = score >= 80
-  $:warning = score >= 50 && score < 80 
-  $:error = score < 50
-
-
 </script>
 
 <main>
     <p class="name hoverable"><strong>{card.count}</strong> {card.name}</p>
-    {#if score}
-        <p class="hoverable" on:mouseenter={onEnter} on:mouseleave={onLeave} class:success class:warning class:error>
+    {#await $scores}
+        <p class="hoverable loading">
+            <Fa icon={faCircleNotch} class="rotate"/>
+        </p> 
+    {:then data}
+        {#if data[card.name]}
+        <p class="hoverable" on:mouseenter={onEnter} on:mouseleave={onLeave} class:success={data[card.name][0] > 0.8} class:warning={data[card.name][0] > 0.6} class:error={data[card.name][0] < 0.6}>
             {#if scoreHovered}
-                <span in:fade>{score}</span>
-            {:else if success}
+                <div in:fade class="stats">
+                    <span >({Math.round(100 * (data[card.name])[0])})</span>
+                    <span >({Math.round((($scores[card.name])[1] + Number.EPSILON) * 10) / 10})</span>
+                    <span >({Math.round(100 * ($scores[card.name])[2])})</span>
+                </div>
+            {:else if data[card.name][0] > 0.8}
                 <Fa icon={faCheckCircle}/>
-            {:else if warning}
+            {:else if data[card.name][0] > 0.6}
                 <Fa icon={faExclamationCircle}/>
-            {:else if error}
+            {:else if data[card.name][0] !== 0}
                 <Fa icon={faTimesCircle}/>
             {/if}
         </p> 
-    {:else if score !== 0}
-        <p class="hoverable" on:mouseenter={onEnter} on:mouseleave={onLeave} class:success class:warning class:error>
-            <Fa icon={faCircleNotch} class="rotate"/>
-        </p> 
+        {:else}
+            <p class="hoverable loading">
+                <Fa icon={faCircleNotch} class="rotate"/>
+            </p> 
+        {/if}
+    {/await}
+    {#if !scoreHovered }
+        <button class="hoverable" on:click={increment}><Fa icon={faPlus} /></button>
+        <button class="hoverable" on:click={decrement}><Fa icon={faMinus} /></button>
     {/if}
-    <button class="hoverable" on:click={increment}><Fa icon={faPlus} size="sm"/></button>
-    <button class="hoverable" on:click={decrement}><Fa icon={faMinus} size="sm"/></button>
 </main>
 
 <style>
@@ -68,6 +72,12 @@
 
     .name {
         flex-grow: 1;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
     }
 
     main {
@@ -123,13 +133,18 @@
 	      height: 100%;
     }
 
-    .success {
-        color: var(--success-color)
+    .success, .warning, .error, .loading  {
+        text-align: center;
     }
+
     .warning {
-        color: var(--warning-color)
+        color: var(--warning-color);
+    }
+    .success {
+        color: var(--success-color);
     }
     .error {
-        color: var(--error-color)
+        color: var(--error-color);
     }
+
 </style>

@@ -2,6 +2,7 @@
   import { gqlClient } from "./utils/gqlClient"
   import { MANIFY_URL } from "./gql/scryfallify"
   import Deck from "./components/Deck.svelte"
+
   import Nav from "./components/Nav.svelte"
 
   let url = ""
@@ -9,7 +10,6 @@
   const { watch } = gqlClient("https://mana-vis-api.herokuapp.com/")
 
   $: response = watch(MANIFY_URL, { url })
-
 
 </script>
 
@@ -20,7 +20,7 @@
       <input bind:value={url} placeholder="PASTE YOUR DECK LINK HERE" />
     </div>
     {#await $response}
-      <h2>Waiting..</h2>
+      <h2>We're pulling up your deck...</h2>
     {:then deckData}
       <Deck inputDeck={deckData.manifyURL} />
     {:catch errors}
