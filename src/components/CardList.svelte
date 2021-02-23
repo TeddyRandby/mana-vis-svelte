@@ -19,18 +19,11 @@ import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 </main>
 
 <style>
-
     .header {
       display: flex;
       place-items: center;
-    }
-
-    .icon {
-      flex-grow: 1;
-      text-align: right;
-      margin: 0 15px;
-      align-content: center;
-      opacity: 0.5;
+      letter-spacing: 0px;
+      opacity: 60%;
     }
     
     .title{

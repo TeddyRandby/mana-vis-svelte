@@ -30,8 +30,9 @@
     p {
         cursor: pointer;
         margin: 0;
-        padding: .5rem;
+        padding: .35rem;
 	      letter-spacing: 2px;
+        font-size: smaller;
 	      font-weight: 600;
     }
 
@@ -52,10 +53,6 @@
         padding: 0;
         margin-left: .15rem;
         min-width: min-content;
-    }
-
-    main:hover {
-        box-shadow: 0 2px;
     }
 
 </style>

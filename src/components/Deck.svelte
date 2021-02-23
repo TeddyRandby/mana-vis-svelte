@@ -64,6 +64,6 @@
   .deck-column {
     width: 100%;
     max-width: 55ch;
+    padding: 2rem;
   }
-
 </style>
