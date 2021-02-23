@@ -5,7 +5,7 @@
 
   import Nav from "./components/Nav.svelte"
 
-  let url = ""
+  let url = "https://www.mtggoldfish.com/archetype/standard-sultai-control-eld#paper"
 
   const { watch } = gqlClient("https://mana-vis-api.herokuapp.com/")
 
@@ -63,6 +63,48 @@
     font-family: 'Montserrat', sans-serif;
     color: var(--primary-color);
   }
+  
+  :global(.hoverable) {
+        border: none;
+	      font-family: inherit;
+	      font-size: inherit;
+	      color: inherit;
+	      background: none;
+	      cursor: pointer;
+	      display: inline-block;
+	      outline: none;
+	      position: relative;
+	      -webkit-transition: all 0.3s;
+	      -moz-transition: all 0.3s;
+	      transition: all 0.3s;
+        z-index: 0;
+    }
+
+    :global(.hoverable:after) {
+	      content: '';
+	      position: absolute;
+	      z-index: -1;
+	      -webkit-transition: all 0.3s;
+	      -moz-transition: all 0.3s;
+	      transition: all 0.3s;
+	      width: 100%;
+	      height: 0;
+	      bottom: 0;
+	      left: 0;
+	      background: var(--primary-color);
+    }
+
+    :global(.hoverable:hover,
+    .hoverable:active)
+    {
+	      color: var(--background-color-dark);
+    }
+
+    :global(.hoverable:hover:after,
+    .hoverable:active:after)
+     {
+	      height: 100%;
+    }
 
   .deck{
     padding: 2vh 5vw;
