@@ -1,13 +1,17 @@
 <script>
   import { gqlClient } from "./utils/gqlClient"
   import { MANIFY_URL } from "./gql/scryfallify"
+  import { setContext } from "svelte"
   import Deck from "./components/Deck.svelte"
 
   import Nav from "./components/Nav.svelte"
 
   let url = "https://www.mtggoldfish.com/archetype/standard-sultai-control-eld#paper"
 
-  const { watch } = gqlClient("https://mana-vis-api.herokuapp.com/")
+  const { query, watch } = gqlClient("https://mana-vis-api.herokuapp.com/")
+
+  setContext('query', query)
+  setContext('watch', watch)
 
   $: response = watch(MANIFY_URL, { url })
 
@@ -34,6 +38,7 @@
 <svelte:head>
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <link href="//cdn.jsdelivr.net/npm/mana-font@latest/css/mana.css" rel="stylesheet" type="text/css" />
 </svelte:head>
 
 <style>

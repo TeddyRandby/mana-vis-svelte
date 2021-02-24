@@ -2,8 +2,8 @@
   import CardList from "./CardList.svelte"
   import { deck, scores, debounce } from "../stores"
 
-  import { gqlClient } from "../utils/gqlClient"
   import { MANIFY_DECK } from "../gql/scryfallify"
+  import { getContext } from "svelte";
 
   export let inputDeck
 
@@ -16,7 +16,7 @@
   
   $: deck.update(()=>[...lands, ...creatures, ...planeswalkers, ...spells, ...artifacts, ...enchantments].map(c=>({name: c.name, count: c.count})))
 
-  const { watch } = gqlClient("https://mana-vis-api.herokuapp.com/")
+  const watch = getContext('watch')
 
   // Watch a debounced version of the deck store - and refresh the query when debounced deck changes.
   $: debouncedDeck = debounce(deck);

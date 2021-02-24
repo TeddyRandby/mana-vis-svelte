@@ -4,6 +4,7 @@
   import { scores } from "../stores"
   import {slide} from "svelte/transition"
   import CardIcons from "./CardIcons.svelte";
+  import CardMana from "./CardMana.svelte"
 
   export let card
 
@@ -11,6 +12,7 @@
 
 <main in:slide={{duration: 800}}>
     <p class="name hoverable"><strong>{card.count}</strong> {card.name}</p>
+    <CardMana pips={card.pips}/>
     {#await $scores}
         <p class="hoverable loading">
             <Fa icon={faCircleNotch} class="rotate"/>

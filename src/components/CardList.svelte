@@ -1,7 +1,5 @@
 <script>
   import Card from "./Card.svelte"
-import Fa from "svelte-fa";
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
   export let cards
   export let header

@@ -5,7 +5,10 @@ export const MANIFY_URL = `
       count
       type_line
       cmc
-      mana_cost
+      pips {
+        colors
+        amount
+      }
       color_identity
     }
   }
