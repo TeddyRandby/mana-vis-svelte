@@ -17,15 +17,15 @@
           card.count = card.count - 1; 
       }
 
-      const onEnter = () => {
-              scoreHovered = true;
-      }
+  const onEnter = () => {
+          scoreHovered = true;
+  }
 
-      const onLeave = () => {
-        setTimeout(()=>{
-          scoreHovered = false;
-        }, 300)
-      }
+  const onLeave = () => {
+    setTimeout(()=>{
+      scoreHovered = false;
+    }, 300)
+  }
 
 </script>
 
@@ -66,6 +66,7 @@
 
   main {
     font-size: smaller;
+    min-width: min-content;
   }
   
   .stats {

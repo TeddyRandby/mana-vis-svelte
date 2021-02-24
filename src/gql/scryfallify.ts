@@ -21,6 +21,10 @@ export const MANIFY_DECK = `
       score
       appearences
       onCurve
+      pips {
+        colors
+        amount
+      }
     }
   }
 `;
