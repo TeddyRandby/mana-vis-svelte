@@ -9,7 +9,7 @@
 
   $: creatures = inputDeck.filter((c) => c.type_line.match(/Creature/g) && !c.type_line.match(/Land/g))
   $: lands = inputDeck.filter((c) => c.type_line.match(/Land/g))
-  $: planeswalkers = inputDeck.filter((c) => c.type_line.match(/Planeswalker/g) && !c.type_line.match(/Land/g))
+  $: planeswalkers = inputDeck.filter((c) => c.type_line.match(/Planeswalker/g) && !c.type_line.match(/Creature/g))
   $: spells = inputDeck.filter((c) => c.type_line.match(/((Instant)|(Sorcery))/g) && !c.type_line.match(/Land/g))
   $: artifacts = inputDeck.filter((c) => c.type_line.match(/(Artifact)/g) && !c.type_line.match(/Land/g) && !c.type_line.match(/Creature/g))
   $: enchantments = inputDeck.filter((c) => c.type_line.match(/Enchantment/g))

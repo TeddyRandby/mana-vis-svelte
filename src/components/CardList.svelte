@@ -10,6 +10,7 @@
 <main>
   <div class=header>
     <p class=title>{header} ({count})</p>
+    <i class={"ms ms-" + header.slice(0,-1).toLowerCase()}>
   </div>
   {#each cards as card}
     <Card bind:card />
@@ -17,6 +18,7 @@
 </main>
 
 <style>
+    
     .header {
       display: flex;
       place-items: center;
@@ -29,6 +31,7 @@
         text-transform: uppercase;
         font-weight: bold;
         margin: 0;
+        margin-right: 0.55rem;
         cursor: default;
     }
 </style>
